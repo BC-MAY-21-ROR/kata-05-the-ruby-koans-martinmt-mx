@@ -29,8 +29,39 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # Your goal is to write the score method.
 
+def one_or_five number
+  if number == 1
+    100
+  elsif number == 5
+    50
+  else
+    0
+  end
+end
+
 def score(dice)
-  # You need to write this method
+  dice_size = dice.length
+
+  unless dice_size == 0
+    dice = dice.sort
+    points = 0
+    if dice_size < 3
+      dice.each {|n| points = points + one_or_five(n)}
+      return points
+      else
+        6.times do |i|
+          if dice.count(i+1)>=3
+            [i+1, i+1, i+1].each { |x| dice.delete_at dice.index(x) }
+            points += ((i+1)*100)
+            points = 1000 if i+1 == 1
+          end
+        end
+        dice.each {|n| points = points + one_or_five(n)}
+        return points      
+    end
+  else
+    0
+  end
 end
 
 class AboutScoringProject < Neo::Koan
